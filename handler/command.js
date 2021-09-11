@@ -1,6 +1,5 @@
 const { Client } = require("discord.js");
 const { readdirSync, readdir } = require("fs");
-const { bgGreen } = require("chalk");
 /*
  * @param {Client} client
  */
