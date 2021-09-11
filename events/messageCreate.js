@@ -13,5 +13,10 @@ module.exports = (client, message) => {
 
   if (!cmd) return;
 
-  cmd.exec(client, message, args);
+  try {
+    cmd.exec(client, message, args);
+  } catch(err) {
+    console.error(err);
+    message.reply({content: "Seems like some error occured! Please contact <@!777236834064531467> "});
+  }
 };
