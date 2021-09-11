@@ -1,6 +1,6 @@
 module.exports = {
   name: "sudo",
-  run: async (client, message, args) => {
+  exec: async (client, message, args) => {
     let wb = await message.channel.createWebhook(message.author.username, {
       avatar: message.author.displayAvatarURL({ dynamic: true }),
     });
