@@ -1,6 +1,6 @@
 const { Client } = require("discord.js");
 const { readdirSync, readdir } = require("fs");
-
+const { bgGreen } = require("chalk");
 /*
  * @param {Client} client
  */
@@ -30,6 +30,44 @@ module.exports = async (client) => {
         let eventName = file.split(".")[0];
         client.on(eventName, event.bind(null, client));
         delete require.cache[require.resolve(`../events/${file}`)];
+      });
+  });
+
+  readdir("./slashCommands", (err, data) => {
+    if (err) throw err;
+    else
+      data.forEach((f) => {
+        if (!f.endsWith(".js")) return;
+        const file = require(`../slashCommands/${f}`);
+        if (!file.name) return;
+        if (!file.description)
+          throw new Error(
+            "Please provide a file description!",
+            "SlashCommandPosting"
+          );
+
+        client.slashcommands.set(file.name, file);
+        let fileToSend = {
+          name: file.name,
+          description: file.description,
+        };
+
+        if (file.args) {
+          fileToSend = {
+            name: file.name,
+            description: file.description,
+            options: file.args,
+          };
+        }
+
+        client.on("ready", () => {
+          client.api
+            .applications(client.user.id)
+            .guilds(process.env.postGuildId)
+            .commands.post({
+              data: fileToSend,
+            });
+        });
       });
   });
 };
