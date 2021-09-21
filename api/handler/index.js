@@ -7,8 +7,8 @@ const table = new ascii('Routes');
 const { Client } = require('discord.js');
 
 /* 
-@param {Client} client
-@param {api} api
+	@param {Client} client
+	@param {api} api
 */
 
 module.exports = {
