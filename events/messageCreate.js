@@ -1,10 +1,14 @@
-module.exports = (client, message) => {
-  if (message.author.bot) return;
+const Guild = require('../models/guildSchema');
 
-  if (message.content.indexOf(client.config.prefix) !== 0) return;
+module.exports = async(client, message) => {
+  if (message.author.bot || !message.guild) return;
+
+  const guildConf = await Guild.findOne({guildId: message.guild.id});
+
+  if (message.content.indexOf(guildConf.prefix) !== 0) return;
 
   const args = message.content
-    .slice(client.config.prefix.length)
+    .slice(guildConf.prefix.length)
     .trim()
     .split(/ +/g);
   const command = args.shift().toLowerCase();
